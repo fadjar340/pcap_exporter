@@ -15,3 +15,5 @@ pcap_exporter
 # IDE
 .idea
 *.iml
+
+Dockerfile

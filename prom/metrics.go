@@ -1,7 +1,7 @@
 package prom
 
 import (
-	"github.com/griesbacher/pcap_exporter/opt"
+	"github.com/lmarszal/pcap_exporter/opt"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -16,13 +16,7 @@ var (
 			Help:      "Fill state of the internal buffer",
 		},
 	)
-	PackagesSeen = prometheus.NewGauge(
-		prometheus.GaugeOpts{
-			Namespace: NameSpace,
-			Name:      "packages_seen",
-			Help:      "Amount of packages seen",
-		},
-	)
+	PackagesSeen *prometheus.GaugeVec
 	DNSQueryDuration = prometheus.NewGauge(
 		prometheus.GaugeOpts{
 			Namespace: NameSpace,
@@ -38,6 +32,14 @@ func InitMetrics(options opt.Options) {
 			Namespace: NameSpace,
 			Name:      "bytes_transfered",
 			Help:      "Amount of bytes transfered",
+		},
+		options.GetLabelKeys(),
+	)
+	PackagesSeen = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Namespace: NameSpace,
+			Name:      "packages_seen",
+			Help:      "Amount of packages seen",
 		},
 		options.GetLabelKeys(),
 	)

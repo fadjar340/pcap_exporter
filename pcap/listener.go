@@ -3,8 +3,7 @@ package pcap
 import (
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
-	"github.com/griesbacher/pcap_exporter/opt"
-	"github.com/griesbacher/pcap_exporter/prom"
+	"github.com/lmarszal/pcap_exporter/opt"
 	"github.com/prometheus/common/log"
 	"runtime"
 )
@@ -32,7 +31,6 @@ func StartListen(device, filter string, snaplen int, promiscuous bool, options o
 
 	log.Debug("Started PCAP-Listener")
 	for packet := range packetSource.Packets() {
-		prom.PackagesSeen.Add(1)
 		packetStream <- packet
 	}
 }

@@ -2,9 +2,9 @@ package pcap
 
 import (
 	"github.com/google/gopacket"
-	"github.com/griesbacher/pcap_exporter/dns"
-	"github.com/griesbacher/pcap_exporter/opt"
-	"github.com/griesbacher/pcap_exporter/prom"
+	"github.com/lmarszal/pcap_exporter/dns"
+	"github.com/lmarszal/pcap_exporter/opt"
+	"github.com/lmarszal/pcap_exporter/prom"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
 	"time"
@@ -96,6 +96,7 @@ func (w worker) handlePacket(packet gopacket.Packet) {
 		}
 	}
 	prom.Overall.With(labels).Add(packetSize)
+	prom.PackagesSeen.With(labels).Add(1)
 }
 
 func (w worker) printEndpoint(e gopacket.Endpoint) string {

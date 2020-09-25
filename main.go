@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/griesbacher/pcap_exporter/dns"
-	"github.com/griesbacher/pcap_exporter/opt"
-	"github.com/griesbacher/pcap_exporter/pcap"
-	"github.com/griesbacher/pcap_exporter/prom"
+	"github.com/lmarszal/pcap_exporter/dns"
+	"github.com/lmarszal/pcap_exporter/opt"
+	"github.com/lmarszal/pcap_exporter/pcap"
+	"github.com/lmarszal/pcap_exporter/prom"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/log"
 	"net/http"
@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	version                  = 0.1
+	version                  = 0.2
 	labelFormatString string = "Add %s to labels."
 )
 
@@ -60,16 +60,17 @@ var (
 func main() {
 	// handle args
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "PCAP_exporter\n" +
-			"Copyright (c) 2017 Philip Griesbacher\n"+
-			"Version: %s\n" +
-			"https://github.com/Griesbacher/pcap_exporter",
-			version)
-		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
-		fmt.Fprintf(os.Stderr, "Note:\n"+
-			"- If 'l-sa' or 'l-da' is used but no address can be determent, '%s' will be set as label value.\n"+
-			"- If 'l-sp' or 'l-dp' is used but no port can be determent, '%s' will be set as label value.\n"+
-			"- If any protocol is used but no protocol can be determent, '' will be set as label value.\n\n",
+		//noinspection GoPrintFunctions
+		_, _ = fmt.Fprintf(os.Stderr,
+			"Copyright (c) 2017 Philip Griesbacher\n"+"PCAP_exporter\n"+
+			       "Version: %s\n" +
+			       "https://github.com/Griesbacher/pcap_exporter",
+				    version)
+		_, _ = fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+		_, _ = fmt.Fprintf(os.Stderr, "Note:\n"+
+		     	   "- If 'l-sa' or 'l-da' is used but no address can be determent, '%s' will be set as label value.\n"+
+			       "- If 'l-sp' or 'l-dp' is used but no port can be determent, '%s' will be set as label value.\n"+
+			       "- If any protocol is used but no protocol can be determent, '' will be set as label value.\n\n",
 			pcap.EscapeIP, pcap.EscapePort,
 		)
 		flag.PrintDefaults()
@@ -77,8 +78,8 @@ func main() {
 	options := parseFlags()
 
 	if *listInterfaces {
-		fmt.Fprint(os.Stderr, "Available interfaces:\n\n")
-		fmt.Fprint(os.Stderr, pcap.ListAvailableInterfaces())
+		_, _ = fmt.Fprint(os.Stderr, "Available interfaces:\n\n")
+		_, _ = fmt.Fprint(os.Stderr, pcap.ListAvailableInterfaces())
 		os.Exit(1)
 	}
 
@@ -104,10 +105,10 @@ func main() {
 	log.Infof("Metrics are available at: %s/metrics", *address)
 	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/options", func(w http.ResponseWriter, r *http.Request) {
-		w.Write(options.HTMLString())
+		_, _ = w.Write(options.HTMLString())
 	})
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`
+		_, _ = w.Write([]byte(`
 <html>
 	<head>
 		<title>PCAP Exporter</title>

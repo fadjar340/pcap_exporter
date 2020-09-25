@@ -1,7 +1,7 @@
 package dns
 
 import (
-	"github.com/griesbacher/pcap_exporter/prom"
+	"github.com/lmarszal/pcap_exporter/prom"
 	"net"
 	"sync"
 	"time"
